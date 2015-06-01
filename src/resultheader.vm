@@ -1,0 +1,29 @@
+#  
+#   Results were retrieved using Clusterix software
+#   http://clusterix.cerit-sc.cz/
+#   In case of problems, please, report to: sezima@mail.muni.cz
+#
+#   Labels:
+#
+#       STAR_NO identificator of star retrieved from the input data
+#       RA      right ascension of a star
+#       DEC     declination of a star
+#       RA_PM   proper motion in alpha
+#       DEC_PM  proper motion in delta
+#       PROB    probability that star belongs to evaluated open cluster
+#
+#   Parameters: 
+# 
+#       CLUSTER RA: ${cluster_ra}
+#       CLUSTER DEC: ${cluster_dec}
+#       CLUSTER INNER RADIUS: ${cluster_radius} arcmins
+#       CLUSTER OUTER RADIUS: ${cluster_outer_radius} arcmins
+#       PROPER MOTION CUTOFF: ${data_max_mu} mas/yr
+#       PROPER MOTION ERR CUTOFF: ${data_max_mu_err} mas/yr
+#       SMOOTH PARAMETER: ${data_smooth_param}
+#       GAMMA FACTOR: ${data_gamma_treshold}
+#
+#       EXPECTED NUMBER OF MEMBERS: ${expected_num_of_members}
+#
+#STAR_NO        RA               DEC            RA_PM   DEC_PM  PROB 
+#------------   ----------       -----------    -----   ------  ---- 
