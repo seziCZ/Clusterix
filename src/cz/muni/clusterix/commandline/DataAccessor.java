@@ -205,7 +205,7 @@ public class DataAccessor {
         Set<String> missingVoluntary = getMissingKeys(properties,
                 CommandlineConstants.VOLUNTARY_CONFIG_KEYS);
         if (!missingVoluntary.isEmpty()) {
-            log.log(Level.INFO, "Following voluntary parameters were not proposed: {0}",
+            log.log(Level.INFO, "Following optional parameters were not proposed: {0}",
                     this.toString(missingVoluntary));
         }
 

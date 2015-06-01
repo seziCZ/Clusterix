@@ -1,4 +1,4 @@
-package cz.muni.membership.businesstear;
+package cz.muni.clusterix.helpers;
 
 import cz.muni.clusterix.helpers.Calc;
 import java.util.HashSet;
