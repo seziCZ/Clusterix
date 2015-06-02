@@ -15,9 +15,7 @@ public class CommandlineConstants {
     public static final int CONFIG_PATH_POSITION = 1;
     public static final int OUTPUT_PATH_POSITION = 2;
     
-    // config constants
-    public static final int FIELD_MASK_SIZE = 101;
-    
+    // config constants        
     public static final String CLUSTER_RA_PARAM = "cluster_ra";
     public static final String CLUSTER_DEC_PARAM = "cluster_dec";
     public static final String CLUSTER_DIAMETER_PARAM = "cluster_radius";

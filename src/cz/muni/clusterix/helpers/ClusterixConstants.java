@@ -17,6 +17,7 @@ public class ClusterixConstants {
     public static final double DEFAULT_MAX_MU = 40.0d; // arcmins
     public static final float DEFAULT_MAX_MU_ERR = 40.0f; //arcmins
     public static final int CURRENT_EPOCH = 2000;    
+    public static final int DEFAULT_MASK_DENSITY = 101;
     
     // conversion constants        
     public static final int SEC_TO_ARCSEC = 15;

@@ -5,6 +5,7 @@ import cz.muni.clusterix.businesstier.StellarField;
 import cz.muni.clusterix.entities.OpenCluster;
 import cz.muni.clusterix.entities.Result;
 import cz.muni.clusterix.entities.Star;
+import cz.muni.clusterix.helpers.ClusterixConstants;
 import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,7 +60,7 @@ public class Main {
             Restrictions restrictions = manipulator.getRestriction(config);
             StellarField field = new StellarField(stars);             
             Result probabilities = field.evaluateProbabilities(cluster, 
-                    cluster.getDefaultMask(CommandlineConstants.FIELD_MASK_SIZE), restrictions);
+                    cluster.getDefaultMask(ClusterixConstants.DEFAULT_MASK_DENSITY), restrictions);
             
             // store data
             manipulator.writeResults(outputPath, config, restrictions, cluster, probabilities);

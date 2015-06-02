@@ -9,6 +9,7 @@ import cz.muni.clusterix.entities.Result;
 import cz.muni.clusterix.entities.Star;
 import cz.muni.clusterix.exceptions.NoDataFoundException;
 import cz.muni.clusterix.entities.PmStat;
+import cz.muni.clusterix.helpers.ClusterixConstants;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
@@ -65,15 +66,17 @@ public class StellarField {
         restrictions.setSmooth(clusterFieldFreq.getSmoothParam()); 
         PmFrequency fieldFreq = new PmFrequency(fieldStars, restrictions);
         fieldFreq.scale(mask.getAreaFactor());
-
-        // estimate probabilities        
         PmFrequency clusterFreq = clusterFieldFreq.clone();
         clusterFreq.subtract(fieldFreq);
+
+        // estimate create PM probability function               
         PmProbability result = new PmProbability(clusterFreq, clusterFieldFreq, restrictions);
         restrictions.setGammaCoef(result.getGammaCoef());                         
-        Set<Star> allStars = new HashSet<Star>(clusterFieldStars);        
-        allStars.addAll(fieldStars);
-        List<Star> assigned = result.assignProbabsTo(allStars);
+        
+        // assign probabilities to filtered stars around the cluster
+        FieldMask vicinity = cluster.getDefaultMask(ClusterixConstants.DEFAULT_MASK_DENSITY);
+        Set<Star> candidates = vicinity.getMarkedStars(toProcess, EnumSet.of(FieldType.CLUSTERFIELD, FieldType.FIELD));        
+        List<Star> assigned = result.assignProbabsTo(candidates);
         
         // retrieve proper motion stats                
         ProperMotion fieldMotion = getMotionOf(assigned, false);
