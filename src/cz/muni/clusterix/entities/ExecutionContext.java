@@ -10,9 +10,13 @@ import java.util.Map;
  */
 public class ExecutionContext {
 
+    // currently processed x coordinate
     private int x;
+    // currently processed y coordinate
     private int y;
+    // list of processed functions
     private final List<float[][]> functions;
+    // arbitraty parameters
     private final Map<String, Object> parameters;
 
     public ExecutionContext(int x, int y, List<float[][]> functions, Map<String, Object> parameters) {

@@ -24,7 +24,7 @@ public class PmProbability extends PmFunction {
     
     private static final Logger log = Logger.getLogger(PmProbability.class.getName());
 
-    // inplicit err treshold is defined by GAMMACOEF * mean err    
+    // inplicite err treshold is defined by GAMMACOEF * mean err    
     private final int expectedNumOfMembers;
     private final float gammaCoef;                    
     
@@ -55,12 +55,12 @@ public class PmProbability extends PmFunction {
         // init        
         BinaryOperator probabEst = new ProbabilityEstimation(clusterFreq.getGrid().length / 2, 
                 clusterFreq.getGamma(), rest);
-        applyBinaryOperation(clusterFieldFreq, probabEst, null);
+        applyBinaryOperator(clusterFieldFreq, probabEst, null);
     }
 
 
     /**
-     * Assigns membership probabbilities to each star from givem set. Estimation
+     * Assigns membership probability to each star from givem set. Estimation
      * is being done by maping PM possition to retrieved probability grid.
      *
      * @param stars Stars
@@ -113,8 +113,8 @@ public class PmProbability extends PmFunction {
      * of high cluster density where F(x) > GAMMACOEF * gamma. Method
      * getExpNumOfClusterStars() is responsible for retrieveing such a value
      * from 'cluster frequency function' object. Straightforward operations like
-     * this does not have to be paralelyzed (thread handling may be more time consuming than actual
-     * computation logic).
+     * this does not have to be parallelized (thread handling may be more time 
+     * consuming than actual computation logic).
      *
      * @return expected number of cluster stars.
      */
@@ -156,10 +156,11 @@ public class PmProbability extends PmFunction {
 
         @Override
         public float apply(float firstFunctionValue, float secondFunctionValue, ExecutionContext context) {                                                            
-            // execute
+            
             float result = 0;
             Point pos = new Point(centralCoordinate - context.getCurrentXcoord(),
                     centralCoordinate - context.getCurrentYcoord());
+            
             if (hypot(pos.getX() * CELLSIZE, pos.getY() * CELLSIZE) < restrictions.getMaxMu()){
                 result = firstFunctionValue > treshold ? firstFunctionValue / secondFunctionValue : 0;
             }
@@ -169,7 +170,8 @@ public class PmProbability extends PmFunction {
     }
     
     /**
-     * Compares stars according to their membership probability.
+     * Compares stars according to their membership probability. All stars in sorted 
+     * set has to have probabilities assigned.
      */
     private class ProbabilityComparator implements Comparator<Star>{
         @Override

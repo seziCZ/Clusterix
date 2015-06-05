@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Main classed that is used to run Clusterix in a command line fashion.
+ * Main class that is used to run Clusterix in a command line fashion.
  *
  * @author Tomas Sezima
  */
@@ -26,7 +26,7 @@ public class Main {
 
     public static void main(String[] args) {        
         try {
-            // verify that used proposed expected number of params
+            // verify that the user proposed expected number of params
             if (args == null || args.length != CommandlineConstants.EXPECTED_NUM_OF_ARGS) {
                 throw new IllegalArgumentException("Data, configuration and output "
                         + "file paths have to be proposed as application parameters.");
@@ -65,7 +65,7 @@ public class Main {
             // store data
             manipulator.writeResults(outputPath, config, restrictions, cluster, probabilities);
         } catch (Exception ex) {            
-            // print to standard output
+            // errors are printed to standard output
             String message = ex.getMessage() == null ? ex.getClass().getName() : ex.getMessage();            
             log.log(Level.SEVERE, "EXECUTION ABORTED: {0}", message);            
         }

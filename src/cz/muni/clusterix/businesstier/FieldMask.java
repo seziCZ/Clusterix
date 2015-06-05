@@ -5,7 +5,6 @@ import cz.muni.clusterix.entities.Point;
 import cz.muni.clusterix.entities.RightAscension;
 import cz.muni.clusterix.entities.Star;
 import cz.muni.clusterix.entities.WithCoordinates;
-import cz.muni.clusterix.exceptions.NoDataFoundException;
 import cz.muni.clusterix.helpers.ClusterixConstants;
 import static java.lang.Math.*;
 import java.util.Arrays;
@@ -26,7 +25,7 @@ public class FieldMask implements WithCoordinates{
     private static final Logger log = Logger.getLogger(FieldMask.class.getName());
     
     /**
-     * Enumeration that describes allowed values for Field Mask.
+     * Enumeration that describes allowed values of stellar field types.
      */
     public enum FieldType{ 
         CLUSTERFIELD, 
@@ -35,10 +34,10 @@ public class FieldMask implements WithCoordinates{
     }
 
     // mask density
-    private int matrixSize;
-    // cellsize of mask in arcseconds
+    private int density;
+    // size of individual cells in arcseconds
     private float cellSize;    
-    // grid representing mask
+    // actual mask
     private FieldType[][] mask;
     //center coordinates of mask (so that we can fit it to a stellar field)
     RightAscension ra;
@@ -50,20 +49,20 @@ public class FieldMask implements WithCoordinates{
      * holds information about performed selection. Central coordinates are
      * related to the mask itself, not the underlaying cluster.
      *
-     * @param matrixSize Mask density
+     * @param density Mask density
      * @param cellsize Size of single cell in arcseconds
      * @param mask FieldType mask
      * @param ra Right ascension of center of the mask
      * @param dec Declination of center of the mask     
      */
-    public FieldMask(int matrixSize, float cellsize, FieldType[][] mask,
+    public FieldMask(int density, float cellsize, FieldType[][] mask,
             RightAscension ra, Declination dec){
-        if (matrixSize % 2 == 0) {
+        if (density % 2 == 0) {
             //mask has to be symetric in order to ease calculations   
             log.error("An attempt was made to create mask with even size.");
             throw new IllegalArgumentException("Matrix size has to be odd.");
         }
-        this.matrixSize = matrixSize;
+        this.density = density;
         this.cellSize = cellsize;
         this.mask = mask;
         this.ra = ra;
@@ -79,7 +78,7 @@ public class FieldMask implements WithCoordinates{
      * @return Stars laying under relevant cells
      */
     public Set<Star> getMarkedStars(Set<Star> allStars, Set<FieldType> markers) {
-        int matrixMean = matrixSize / 2;
+        int matrixMean = density / 2;
         Set<Star> selectedStars = new HashSet<Star>();
         if(allStars != null){
             for (Star star : allStars) {
@@ -98,35 +97,27 @@ public class FieldMask implements WithCoordinates{
     
 
     /**
-     * Retrieves ratio between the volume of mask cells marked as "cluster +
-     * field" and those marked as "field".
-     *
-     * @return Ration between volumes of "cluster + field" and "field" mask
-     * cells
-     * @throws cz.muni.clusterix.exceptions.NoDataFoundException
+     * Retrieves ratio between areas taken by proposed field types.
+     * 
+     * @param first First field type
+     * @param second Second field type
+     * @return Ration between volumes of mask cells marked as "first" and "second"
      */
-    public float getAreaFactor() throws NoDataFoundException {
-        int numOfCfMarkers = 0;
-        int numOfFmarkers = 0;
-        for (int i = 0; i < matrixSize; i++) {
-            for (int u = 0; u < matrixSize; u++) {
-                if (mask[i][u] == FieldType.CLUSTERFIELD) {
-                    numOfCfMarkers++;
-                }else if (mask[i][u] == FieldType.FIELD) {
-                    numOfFmarkers++;
+    public float getRatio(FieldType first, FieldType second){
+        int firstMarkers = 0;
+        int secondMarkers = 0;
+        for (int i = 0; i < density; i++) {
+            for (int u = 0; u < density; u++) {
+                if (mask[i][u] == first) {
+                    firstMarkers++;
+                }else if (mask[i][u] == second) {
+                    secondMarkers++;
                 }
             }
-        }
-
-        // check retrieved values
-        if (numOfFmarkers == 0 || numOfCfMarkers == 0) {
-            log.error("No stars were selected by user.");
-            throw new NoDataFoundException("Both 'cluster + field' and 'cluster' stars need to be selected "
-                    + "in order to calculate membership probabilities.");
-        }
+        }        
         
-        return (float) numOfCfMarkers / numOfFmarkers;
-    }
+        return secondMarkers != 0 ? (float) firstMarkers / secondMarkers : Float.NaN;    
+    }        
 
     
     // private helpers
@@ -184,11 +175,11 @@ public class FieldMask implements WithCoordinates{
     }
 
     public int getDensity() {
-        return matrixSize;
+        return density;
     }
 
     public void setDensity(int matrixSize) {
-        this.matrixSize = matrixSize;
+        this.density = matrixSize;
     }    
 
     public void setRightAscension(RightAscension ra) {
@@ -207,7 +198,7 @@ public class FieldMask implements WithCoordinates{
             return false;
         }
         final FieldMask other = (FieldMask) obj;
-        if (this.matrixSize != other.matrixSize) {
+        if (this.density != other.density) {
             return false;
         }
         if (Double.doubleToLongBits(this.cellSize) != Double.doubleToLongBits(other.cellSize)) {
@@ -228,7 +219,7 @@ public class FieldMask implements WithCoordinates{
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 47 * hash + this.matrixSize;
+        hash = 47 * hash + this.density;
         hash = 47 * hash + (int) (Double.doubleToLongBits(this.cellSize) ^ (Double.doubleToLongBits(this.cellSize) >>> 32));
         hash = 47 * hash + Arrays.deepHashCode(this.mask);
         hash = 47 * hash + (this.ra != null ? this.ra.hashCode() : 0);
@@ -238,7 +229,7 @@ public class FieldMask implements WithCoordinates{
 
     @Override
     public String toString() {
-        return "FieldMask{" + "matrixSize=" + matrixSize + ", cellSize=" + cellSize + 
+        return "FieldMask{" + "matrixSize=" + density + ", cellSize=" + cellSize + 
                 ", mask=" + mask + ", ra=" + ra + ", dec=" + dec + '}';
     }    
 

@@ -6,10 +6,9 @@ import cz.muni.clusterix.helpers.Calc;
 import cz.muni.clusterix.helpers.ClusterixConstants;
 import org.apache.log4j.Logger;
 
-/**
- * Entity "OpenCluster" holds information about open cluster which is
- * in center of our interest. No stars are assigned to the entity, as it's
- * the application's primary objective (no pre-separation of sample is usually known).
+/** 
+ * Representation of open cluster. Stars are assigned to StellarField entity rather
+ * than cluster as we could not be sure, which stars are actual members...
  * 
  * @author Tomas Sezima
  */
@@ -17,13 +16,13 @@ public class OpenCluster implements WithCoordinates, WithMotion{
     
     private static final Logger log = Logger.getLogger(OpenCluster.class.getName());
     
-    // name
+    // cluster name
     private String name;
     private ProperMotion motion;
-    // center description
+    // central coordinates
     private final Declination centerDec;
     private final RightAscension centerRa;    
-    // radiuses describing open cluster in arcmins
+    // radiuses describing open cluster, in arcmins
     private float radius;
     private float outterRadius;
 
@@ -57,9 +56,9 @@ public class OpenCluster implements WithCoordinates, WithMotion{
     // public helpers   
     
     /**
-     * This method creates mask, that describes default field separation. Stars within
+     * This method creates mask that describes default stellar field segregation. Stars within
      * cluster radius are marked as "cluster + field", stars at distance up to 
-     * 'radius' * 'outerRadius' are used as "field" stars.
+     * 'radius' * 'outerRadius' are described as "field" stars.
      * 
      * @param matrixSize Density of the mask to be created
      * @return implicit FieldMask     

@@ -42,7 +42,7 @@ public class PmProbabilityTest {
         BinaryOperator operator = dummyFunction.new ProbabilityEstimation(gridSize / 2, 
                 treshold - 0.01, restrictions);
         
-        first.applyBinaryOperation(second, operator, null);
+        first.applyBinaryOperator(second, operator, null);
         
         // assert binary operator's functionality
         float[][] modifiedGrid = first.getGrid();

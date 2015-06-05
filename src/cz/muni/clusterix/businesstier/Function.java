@@ -21,25 +21,28 @@ public interface Function {
      * Retrieves size of single matrix cell. I.e. each cell has
      * area getCellSize() * getCellSize().
      * 
-     * @return cell size in arcsec
+     * @return cell size in arcsecs
      */
     public double getCellsize();
     
     /**
-     * Applies given unary operator on 'this' function.
+     * Applies given unary operator on each value of 'this' function.
+     * I.e. for each row x, for each column y, apply operator on 'this' function[x][y].
      * 
      * @param operator Operator to be applied
      * @param context Evaluation context in form of map
      */
-    public void applyUnaryOperation(UnaryOperator operator, Map<String, Object> context);
+    public void applyUnaryOperator(UnaryOperator operator, Map<String, Object> context);
     
     /**
-     * Applies binary operator on 'this' function and function given as parameter.
+     * Applies binary operator on each value of 'this' function and function given as parameter.
+     * I.e. for each row x, for each column y, apply operato on 'this' Function[x][y] 
+     * and given funcion[x][y]          
      * 
      * @param secondFunction Second argument of given binary operator
      * @param operator Operator to be applied
      * @param context Evaluation context in form of map
      */
-    public void applyBinaryOperation(Function secondFunction, BinaryOperator operator, Map<String, Object> context);
+    public void applyBinaryOperator(Function secondFunction, BinaryOperator operator, Map<String, Object> context);
     
 }

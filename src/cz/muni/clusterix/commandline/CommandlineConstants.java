@@ -1,7 +1,7 @@
 package cz.muni.clusterix.commandline;
 
 /**
- * This class holds Clusterix command line execution relevant constants.
+ * This class holds Clusterix constants related to command line execution.
  * 
  * @author Tomas Sezima
  */

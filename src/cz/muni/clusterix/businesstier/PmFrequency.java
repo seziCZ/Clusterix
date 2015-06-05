@@ -42,7 +42,7 @@ public class PmFrequency extends PmFunction {
         
         //evaluate empirical FF using normal circular kernel        
         UnaryOperator kernelEst = new KernelEstimation(function.length / 2, restrictions, stars);
-        super.applyUnaryOperation(kernelEst, null);
+        super.applyUnaryOperator(kernelEst, null);
     }
 
     /**
@@ -61,7 +61,7 @@ public class PmFrequency extends PmFunction {
     /**
      * Mean error of distribution is estimated as a mean of it's negative
      * values. Straightforward operations like this does not have to be 
-     * paralelyzed (thread handling may be more time consuming than actual
+     * parallelized (thread handling may be more time consuming than actual
      * computation logic).
      *
      * @return Mean err (gamma) of 'this' frequency distribution
@@ -110,10 +110,11 @@ public class PmFrequency extends PmFunction {
 
         @Override
         public float apply(float functionValue, ExecutionContext context) {            
-            // execute
+            
             float result = 0;
             Point pos = new Point(centralCoordinate - context.getCurrentXcoord(), 
                     centralCoordinate - context.getCurrentYcoord());
+            
             if (hypot(pos.getX() * CELLSIZE, pos.getY() * CELLSIZE) < restrictions.getMaxMu()){                    
                 for (Star star : stars) {
                     double volume = 1.0 / (2 * PI * square(smoothParam));
@@ -148,7 +149,7 @@ public class PmFrequency extends PmFunction {
             }                                    
         };
                                 
-        clone.applyBinaryOperation(this, copyOperator, null);                                            
+        clone.applyBinaryOperator(this, copyOperator, null);                                            
         return clone;
     }
         

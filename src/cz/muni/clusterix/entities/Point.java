@@ -1,7 +1,7 @@
 package cz.muni.clusterix.entities;
 
 /**
- * Simple representation of point in Cartesian coordinate system.
+ * Simple representation of point in a Cartesian coordinate system.
  *
  * @author Tomas Sezima
  */

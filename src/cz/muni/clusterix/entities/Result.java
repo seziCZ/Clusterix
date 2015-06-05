@@ -5,9 +5,9 @@ import java.util.List;
 
 /**
  *
- * Result of the probability search. Class contains stars, their's probabilities
- * and values used during the calculatins encapsulated in a Restriction object.
- * Also, FieldMask proposed by user is part of the result.
+ * Result of the probability search. Class contains stars, their probabilities,
+ * mask and restrictions proposed by the user and relevant cluster (OpenCluster) 
+ * and field (ProperMotion) information.
  *
  * @author Tomas Sezima
  */

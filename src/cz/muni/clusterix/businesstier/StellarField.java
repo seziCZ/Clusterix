@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
  * Class "StellarField" is a description of evaluated stellar field. It holds
  * information about available stars together with their fundamental properties.
  * On the other hand, cluster itself is separately described through the
- * OpenCluster object which allowes us to break unnecessary dependencies.
+ * OpenCluster object which allows us to break unnecessary dependencies.
  *
  * @author Tomas Sezima
  */
@@ -33,26 +33,26 @@ public class StellarField {
     /**
      * Constructor.
      *
-     * @param stars Stars emerging in investigated stellar field
+     * @param stars Stars related to incestigated stellar field
      */
     public StellarField(Set<Star> stars) {
         this.stars = stars;
     }
 
     /**
-     * Core method of the application. For given open cluster and field mask,
-     * method evaluates membership probabilies for stars which satisfy criteria
+     * Core method of the application. For given open cluster, field mask and restrictions,
+     * this method evaluates membership probabilies for stars which satisfy criteria
      * set in 'restrictions' object.
      *
-     * @param cluster Open cluster for which the probabilities are calculated
-     * @param mask Field separation definition
+     * @param cluster Open cluster
+     * @param mask Definition of cluster-field and field samples
      * @param restrictions Restrictions proposed by the user
      * @return Result containing stars with evaluated probabilities     
      * @throws cz.muni.clusterix.exceptions.NoDataFoundException
      */
     public Result evaluateProbabilities(OpenCluster cluster, FieldMask mask, Restrictions restrictions) throws NoDataFoundException {
 
-        //separate stars that will be used for cluster+field PDF from those that will
+        //separates stars that will be used for cluster+field PDF from those that will
         //be used for creating field PDF
         Set<Star> toProcess = this.getFilteredStars(restrictions);
         Set<Star> clusterFieldStars = mask.getMarkedStars(toProcess, EnumSet.of(FieldType.CLUSTERFIELD));
@@ -61,24 +61,24 @@ public class StellarField {
         // Actual plane size could be smaller than the one proposed via Restriction
         restrictions.setMaxMu(getOptimalPlaneSize(toProcess, restrictions));        
 
-        //now calculate PM frequency functions for these subsets          
+        // ...now calculate PM frequency functions...
         PmFrequency clusterFieldFreq = new PmFrequency(clusterFieldStars, restrictions);        
         restrictions.setSmooth(clusterFieldFreq.getSmoothParam()); 
         PmFrequency fieldFreq = new PmFrequency(fieldStars, restrictions);
-        fieldFreq.scale(mask.getAreaFactor());
+        fieldFreq.scale(mask.getRatio(FieldType.CLUSTERFIELD, FieldType.FIELD));
         PmFrequency clusterFreq = clusterFieldFreq.clone();
         clusterFreq.subtract(fieldFreq);
 
-        // estimate create PM probability function               
+        // ...create PM probability function...
         PmProbability result = new PmProbability(clusterFreq, clusterFieldFreq, restrictions);
         restrictions.setGammaCoef(result.getGammaCoef());                         
         
-        // assign probabilities to filtered stars around the cluster
+        // ...assign probabilities to filtered stars around the cluster...
         FieldMask vicinity = cluster.getDefaultMask(ClusterixConstants.DEFAULT_MASK_DENSITY);
         Set<Star> candidates = vicinity.getMarkedStars(toProcess, EnumSet.of(FieldType.CLUSTERFIELD, FieldType.FIELD));        
         List<Star> assigned = result.assignProbabsTo(candidates);
         
-        // retrieve proper motion stats                
+        // ...retrieve proper motion stats                
         ProperMotion fieldMotion = getMotionOf(assigned, false);
         ProperMotion clusterMotion = getMotionOf(assigned, true);
         cluster.setMotion(clusterMotion);       
@@ -112,11 +112,11 @@ public class StellarField {
     
     /**
      * This method returns implicit maximum PM that will be used to estimate
-     * sizes of empirical frequency (and propability density) functions' grids.
+     * sizes of empirical frequency (and propability density) function grids.
      *
      * @param stars Stars to be checked for PMs
      * @param rest Restrictions to be checked for max PM definition
-     * @return PM to be used as a max PM
+     * @return Optimal plane size
      */
     private double getOptimalPlaneSize(Set<Star> stars, Restrictions rest) {
         double max = 0;
@@ -136,8 +136,8 @@ public class StellarField {
      * to mark cluster/field members...
      * 
      * @param stars List of stars to be examined
-     * @param clusterMembers 'True' if cluster members should be investigated, 'false' otherwise
-     * @return Proper motion of relevant set of stars
+     * @param clusterMembers 'True' if cluster members should be evaluated, 'false' otherwise
+     * @return Mean proper motion of relevant set of stars
      */
     private ProperMotion getMotionOf(List<Star> stars, boolean clusterMembers) {                
         ProperMotion result = null;        

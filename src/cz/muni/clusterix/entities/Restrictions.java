@@ -9,9 +9,9 @@ public class Restrictions {
 
     // brightness restrictions    
     private Float maxMag;
-    // propper motion restrictions
+    // proper motion restrictions
     private Double maxMu;    
-    // propper motion error restrictions
+    // proper motion error restrictions
     private Float maxMuErr;
     // gaussian dispersion 
     private Double smooth;

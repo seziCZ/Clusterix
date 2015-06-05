@@ -51,9 +51,10 @@ public class DataAccessor {
     }
 
     /**
-     * Retrieves all Stars from given file.
+     * Retrieves all Stars from given file. File have to have structure defined
+     * in sample files (https://github.com/seziCZ/Clusterix), exception is thrown otherwise.
      *
-     * @param path Path to file containing relevant data
+     * @param path Path to file that contains relevant data
      * @return Set of retrieved Stars
      * @throws java.nio.file.FileSystemException
      */
@@ -97,8 +98,9 @@ public class DataAccessor {
     }
 
     /**
-     * Get cluster from proposed property file. Property file should already be
-     * tested that it exists and contains all required values.
+     * Get cluster from proposed property file. Property has to have structure
+     * defined by sample file (https://github.com/seziCZ/Clusterix). exception
+     * is thrown otherwise.
      *
      * @param properties Properties containing Cluster relevant data
      * @return Retrieved OpenCluster
@@ -110,7 +112,7 @@ public class DataAccessor {
         OpenCluster cluster = new OpenCluster(ascension.toString() + declination.toString(),
                 ascension, declination, radius);
 
-        // check for voluntary options
+        // check for optional params
         if (properties.containsKey(CommandlineConstants.CLUSTER_OUTER_DIAMETER)) {            
             float outer_radius = Float.valueOf(properties.getProperty(CommandlineConstants.CLUSTER_OUTER_DIAMETER));
             cluster.setOutterRadius(outer_radius);
@@ -140,7 +142,8 @@ public class DataAccessor {
     }
 
     /**
-     * Writes retrieved probabilities to proposed output file.
+     * Writes retrieved probabilities to proposed output file. File does not have
+     * to exists, is rewriten if it does.
      *
      * @param outputPath Path to output file
      * @param properties Application properties
@@ -160,7 +163,7 @@ public class DataAccessor {
             params.put(key, properties.getProperty(key));
         }                
         
-        // reconstruct voluntary options from restrictions        
+        // reconstruct optional params from restrictions        
         params.put(CommandlineConstants.CLUSTER_OUTER_DIAMETER, String.format(Locale.ENGLISH, "%.2f",cluster.getOutterRadius()));
         params.put(CommandlineConstants.DATA_GAMMA_PARAM, String.format(Locale.ENGLISH, "%.2f", restrictions.getGammaCoef()));        
         params.put(CommandlineConstants.DATA_MAX_MU_ERR_PARAM, String.format(Locale.ENGLISH, "%.2f", restrictions.getMaxMuErr()));
@@ -221,7 +224,7 @@ public class DataAccessor {
 
     
     // private helpers          
-    
+
     private void validateValuesAreFloats(Properties properties, String[] keys) {
         for (String key : keys) {
             if (properties.containsKey(key)) {

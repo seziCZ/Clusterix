@@ -3,7 +3,7 @@ package cz.muni.clusterix.entities;
 import static java.lang.Math.hypot;
 
 /**
- * This class represents proper motion of an object.
+ * This class represents proper motion of a celestial object.
  * 
  * @author Tomas Sezima
  */
@@ -36,8 +36,8 @@ public class ProperMotion {
     // public methods
     
     /**
-     * This method retrieves mean value of propper motions from both directions
-     * (alpha, delta) by formula sqrt(muAlpha^2 + muDelta^2).
+     * This method retrieves mean value of proper motions from both directions
+     * (alpha, delta) using formula sqrt(muAlpha^2 + muDelta^2).
      *
      * @return mean of alpha and delta PMs
      */
@@ -46,8 +46,8 @@ public class ProperMotion {
     }
 
     /**
-     * This method retrieves mean value of errors of propper motions from both
-     * directions (alpha, delta) by formula sqrt(errAlpha^2 + errDelta^2).
+     * This method retrieves mean value of errors of proper motions from both
+     * directions (alpha, delta) using formula sqrt(errAlpha^2 + errDelta^2).
      *
      * @return mean error of alpha and delta PMs
      */

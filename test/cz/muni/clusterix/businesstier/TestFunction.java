@@ -109,7 +109,7 @@ public class TestFunction {
             }
         };
         
-        firstFunction.applyBinaryOperation(testFunction, testOperator, null);
+        firstFunction.applyBinaryOperator(testFunction, testOperator, null);
         
         // assert equals
         float[][] firstFunctionGrid = firstFunction.getGrid();
@@ -141,7 +141,7 @@ public class TestFunction {
             }
         };
         
-        firstFunction.applyUnaryOperation(testOperator, null);        
+        firstFunction.applyUnaryOperator(testOperator, null);        
         
         // assert equals
         float[][] firstFunctionGrid = firstFunction.getGrid();

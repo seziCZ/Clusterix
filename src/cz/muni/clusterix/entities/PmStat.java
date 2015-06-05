@@ -1,8 +1,8 @@
 package cz.muni.clusterix.entities;
 
 /**
- * Helper that allowes programer to transfer statistical information about
- * propper motions in both axis (alpha, delta) in a single entity.
+ * Helper that allows programmer to transfer statistical information about
+ * proper motions in both axis (alpha, delta) in a single entity.
  *
  * @author Tomas Sezima
  */

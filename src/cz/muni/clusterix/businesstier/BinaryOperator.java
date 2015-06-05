@@ -13,12 +13,12 @@ import cz.muni.clusterix.entities.ExecutionContext;
 public interface BinaryOperator {        
     
     /**
-     * Applies operation to given values.
+     * Applies operator to given values.
      * 
      * @param firstFunctionValue First value
      * @param secondFunctionValue Second value     
      * @param context Execution context     
-     * @return The outcome of operation application
+     * @return The outcome of operator application
      */
     public float apply(float firstFunctionValue, float secondFunctionValue, ExecutionContext context);
     

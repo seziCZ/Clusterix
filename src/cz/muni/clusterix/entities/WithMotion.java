@@ -1,7 +1,7 @@
 package cz.muni.clusterix.entities;
 
 /** 
- * Describes object that have Proper motion.
+ * Describes objects that have Proper motion.
  * 
  * @author Tomas Sezima
  */

@@ -70,12 +70,12 @@ public class PmFunction implements Function{
             }
         };        
         
-        applyUnaryOperation(scale, params);
+        applyUnaryOperator(scale, params);
     }
 
     /**
-     * Subtracts given grid from 'this' object. Subtracted function has to have
-     * the same density and size as 'this' object does.
+     * Subtracts given function from 'this' object. Subtracted function has to have
+     * the same matrix density and size as 'this' object does.
      *
      * @param toSubtract Function to be subtracted from 'this' function    
      */
@@ -93,7 +93,7 @@ public class PmFunction implements Function{
             }
         };
         
-        applyBinaryOperation(toSubtract, subtraction, null);
+        applyBinaryOperator(toSubtract, subtraction, null);
     }
 
     /**
@@ -115,21 +115,21 @@ public class PmFunction implements Function{
             }
         };
         
-        applyBinaryOperation(denominator, division, null);
+        applyBinaryOperator(denominator, division, null);
     }
     
 
     /**
-     * Hanles parallel application of given operation. First function will be
-     * modified by applyng given binary operation on each cell of both
+     * Handles parallel application of given operator. First function will be
+     * modified by applying given binary operator on each cell of both
      * functions.
      *
      * @param secondFunction Function to be used as second argument of opperation
-     * @param operation Operation to be applyed
+     * @param operation Operator to be applied
      * @param context Operation context         
      */
     @Override
-    public void applyBinaryOperation(Function secondFunction, 
+    public void applyBinaryOperator(Function secondFunction, 
             BinaryOperator operation, Map<String, Object> context){
         // assert function grids have the same dimension.
         if (this.function.length != secondFunction.getGrid().length) {
@@ -159,15 +159,14 @@ public class PmFunction implements Function{
         
     
     /**
-     * Hanles parallel application of given operation. Function will be
-     * modified by applyng given unary operation on each cell of both
-     * functions.
+     * Handles parallel application of given operator. Each cell of 'this' function
+     * will be modified by applying given unary operator.         
      *     
-     * @param operator Operation to be applyed
+     * @param operator Operator to be applyed
      * @param context Operation context     
      */
     @Override
-    public void applyUnaryOperation(UnaryOperator operator, 
+    public void applyUnaryOperator(UnaryOperator operator, 
         Map<String, Object> context){                    
         
         int cores = ClusterixConstants.NUM_OF_AVAILABLE_PROCESSORS;

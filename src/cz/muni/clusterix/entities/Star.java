@@ -2,7 +2,7 @@ package cz.muni.clusterix.entities;
 
 /**
  * Entity "Star" represents single star and its basic properties, such as
- * magnitude, possition and propper motions.
+ * magnitude, possition and proper motion.
  *
  * @author Tomas Sezima
  */
